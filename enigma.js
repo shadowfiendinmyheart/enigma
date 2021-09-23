@@ -1,4 +1,4 @@
-const letter = 'FCCEEBFDEB';
+const letter = 'FFFFFFFFFFFFFFFFFF';
 
 // TODO: 1. Добавить прокрутку для среднего и медленного роторов (+)
 //       2. Добавить механизм для нормализации position ротора (+)
@@ -17,27 +17,22 @@ const letter = 'FCCEEBFDEB';
 const alphabets = ['A', 'B', 'C', 'D', 'E', 'F'];
 
 const fastRotor = {
-    // dictionary: [[1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], 
-    //              [7, 8], [8, 9], [9, 10], [10, 11], [11, 12], 
-    //              [12, 13], [13, 14], [14, 15], [15, 16], [16, 17], 
-    //              [17, 18], [18, 19], [19, 20], [20, 21], [21, 22], 
-    //              [22, 23], [23, 24], [24, 25], [25, 26], [26, 1]],
-    dictionary: [[1, 3], [2, 5], [3, 1], [4, 2], [5, 4], [6, 6]],
+    dictionary: [[0, 2], [1, 4], [2, 0], [3, 1], [4, 3], [5, 5]],
     position: 0
 } 
 
 const mediumRotor = {
-    dictionary: [[1, 2], [2, 3], [3, 4], [4, 5], [5, 1], [6, 6]],
+    dictionary: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 0], [5, 5]],
     position: 0
 }
 
 const slowRotor = {
-    dictionary: [[1, 5], [2, 1], [3, 3], [4, 2], [5, 4], [6, 6]],
+    dictionary: [[0, 4], [1, 0], [2, 2], [3, 1], [4, 3], [5, 5]],
     position: 0 
 }
 
 const reflector = {
-    dictionary: [[1, 4], [2, 6], [3, 5]],
+    dictionary: [[0, 3], [1, 5], [2, 4]],
 }
 
 const setRotorsPosition = (fastRotorPosition, mediumRotorPosition, slowRotorPosition) => {
@@ -54,7 +49,7 @@ const rotorChanger = (rotor, inputPos, forward) => {
         step = changer[1] - changer[0];
     } else {
         const finder = rotor.dictionary.findIndex(rotorChanger => {
-            rotorChanger[1] === ((inputPos + rotor.position) % alphabets.length) + 1
+            return rotorChanger[1] == ((inputPos + rotor.position) % alphabets.length);
         });
         changer = rotor.dictionary[finder];
         step = changer[0] - changer[1];
@@ -68,21 +63,20 @@ const rotorChanger = (rotor, inputPos, forward) => {
 }
 
 const reflectorChanger = (reflector, inputPos) => {
-    inputPos = inputPos + 1;
     const changer = reflector.dictionary.find(reflectorGate => {
         return reflectorGate[0] === inputPos || reflectorGate[1] === inputPos;
     });
-
+    
     const outputPos = inputPos === changer[0] ? changer[1] : changer[0];
-    return outputPos - 1;
+    return outputPos;
 }
 
 
-const runMachine = (letter, rotorsPosition) => {
-    const words = letter.toUpperCase().split(' ').join('').split('');
-    const encryptLetter = [];
+const runMachine = (inputLetter, rotorsPosition) => {
+    const words = inputLetter.toUpperCase().split(' ').join('').split('');
+    const outputLetter = [];
     setRotorsPosition(...rotorsPosition);
-
+    
     for (let i = 0; i < words.length; i++) {
         const inputPos = alphabets.findIndex(alphabetsWord => alphabetsWord === words[i]);
         const fastRotorOutput = rotorChanger(fastRotor, inputPos, true);
@@ -92,7 +86,7 @@ const runMachine = (letter, rotorsPosition) => {
         const slowRotorOutputBack = rotorChanger(slowRotor, reflectorOutput, false);
         const mediumRotorOutputBack = rotorChanger(mediumRotor, slowRotorOutputBack, false);
         const fastRotorOutputBack = rotorChanger(fastRotor, mediumRotorOutputBack, false);
-        encryptLetter.push(alphabets[fastRotorOutputBack]);
+        outputLetter.push(alphabets[fastRotorOutputBack]);
 
         fastRotor.position++;
         if (i % fastRotor.dictionary.length === 0 && i !== 0) {
@@ -104,7 +98,7 @@ const runMachine = (letter, rotorsPosition) => {
     }
 
     setRotorsPosition(...rotorsPosition);
-    return encryptLetter.join('');
+    return outputLetter.join('');
 } 
 
 console.log('source letter: ', letter);
