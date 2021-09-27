@@ -39,7 +39,7 @@ runBtn.addEventListener('click', () => {
 })
 
 const increaseRotor = (display) => {
-    if (Number(display.innerHTML) === alphabet.length) {
+    if (Number(display.innerHTML) === alphabet.length - 1) {
         display.innerHTML = 0;
         return
     }
@@ -49,7 +49,7 @@ const increaseRotor = (display) => {
 
 const decreaseRotor = (display) => {
     if (Number(display.innerHTML) === 0) {
-        display.innerHTML = alphabet.length;
+        display.innerHTML = alphabet.length - 1;
         return
     }
     display.innerHTML = Number(display.innerHTML) - 1;
