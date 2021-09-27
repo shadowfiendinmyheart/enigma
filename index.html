@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Enigma machine</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="./style.css">
+    </head>
+    <body>
+        <div class="wrapper">
+            <div>
+                <h1>Enigma</h1>
+                <label for="letterInput">Input your letter to encrypt or decrypt</label>
+                <input type="text" id="letterInput" name="letterInput"/>
+                <button id="runBtn">Run!</button>
+                <div class="answerWrapper">
+                    <span>The answer is - </span>
+                    <h2 id='output''></h2>
+                </div>
+                <h3>Setting</h3>
+                <h4 class="rotorsHeader">Rotors:</h4>
+                <div class="rotors">
+                    <div>
+                        <p>Fast rotor:</p>
+                        <button id="increaseFastRotorBtn">+</button>
+                        <span id="fastRotorDisplay">0</span>
+                        <button id="decreaseFastRotorBtn">-</button>
+                    </div>
+                    <div>
+                        <p>Medium rotor:</p>
+                        <button id="increaseMediumRotorBtn">+</button>
+                        <span id="mediumRotorDisplay">0</span>
+                        <button id="decreaseMediumRotorBtn">-</button>
+                    </div>
+                    <div>
+                        <p>Slow rotor:</p>
+                        <button id="increaseSlowRotorBtn">+</button>
+                        <span id="slowRotorDisplay">0</span>
+                        <button id="decreaseSlowRotorBtn">-</button>
+                    </div>
+                </div>
+                <h4>Plug board</h4>
+                <select id="leftChain"></select>
+                <span> - </span>
+                <select id="rightChain"></select>
+                <button id="addChainBtn">Add words chain</button>
+                <div id="chainWrapper"></div>
+            </div>
+        </div>
+
+        <script type="module" src="utils.js" async defer></script>
+        <script type="module" src="main.js" async defer></script>
+        <script type="module" src="enigma.js" async defer></script>
+    </body>
+</html>

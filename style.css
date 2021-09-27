@@ -1,0 +1,29 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.answerWrapper {
+    height: 40px;
+    margin: 25px 0;
+    gap: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.rotorsHeader {
+    margin-bottom: 0;
+}
+
+.rotors {
+    display: flex;
+    justify-content: space-between;
+}
+
+#chainWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 15px;
+}

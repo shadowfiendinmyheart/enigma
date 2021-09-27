@@ -1,19 +1,4 @@
-const letter = 'HELLOWORLD';
-
-// TODO: 1. Добавить прокрутку для среднего и медленного роторов (+)
-//       2. Добавить механизм для нормализации position ротора (+)
-//       3. Супер сильно потестить всё
-//       4. Добавить панель для смены букв (+)
-//
-//       ?. Возможно поменять функции encrypt и decrypt (соеденить в одну, проход как массив и
-//          двигаться по нему с разных направлений); (+)
-//       ?. Раскидать прогу по файлам
-
-const alphabet = ['A', 'B', 'C', 'D', 'E', 
-                   'F', 'G', 'H', 'I', 'J', 
-                   'K', 'L', 'M', 'N', 'O',
-                   'P', 'Q', 'R', 'S', 'T',
-                   'U', 'V', 'W', 'X', 'Y', 'Z'];
+import { alphabet } from "./utils.js";
 
 const fastRotor = {
     dictionary: [[0, 11], [1, 23], [2, 1], [3, 9], [4, 5], 
@@ -47,8 +32,6 @@ const reflector = {
                  [5, 22], [7, 11], [8, 25], [10, 18], [12, 15], 
                  [14, 21], [17, 24], [20, 23]],
 }
-
-const plugBoard = [['I', 'T'], ['Q', 'W'], ['L', 'A']];
 
 const setRotorsPosition = (fastRotorPosition, mediumRotorPosition, slowRotorPosition) => {
     fastRotor.position = fastRotorPosition;
@@ -86,19 +69,18 @@ const reflectorChanger = (reflector, inputPos) => {
     return outputPos;
 }
 
-const plugBoardChanger = (word) => {
+const plugBoardChanger = (word, plugBoard) => {
     const changer = plugBoard.find(plugWord => plugWord[0] === word || plugWord[1] === word);
     if (!changer) return word;
     return word === changer[0] ? changer[1] : changer[0];
 }
 
-const runMachine = (inputLetter, rotorsPosition) => {
-    const words = inputLetter.toUpperCase().split(' ').join('').split('');
+const runMachine = (inputLetter, rotorsPosition, plugBoard) => {
     const outputLetter = [];
     setRotorsPosition(...rotorsPosition);
     
-    for (let i = 0; i < words.length; i++) {
-        const inputChangedWord = plugBoardChanger(words[i]);
+    for (let i = 0; i < inputLetter.length; i++) {
+        const inputChangedWord = plugBoardChanger(inputLetter[i], plugBoard);
         const inputPos = alphabet.findIndex(alphabetWord => alphabetWord === inputChangedWord);
 
         const fastRotorOutput = rotorChanger(fastRotor, inputPos, true);
@@ -109,7 +91,7 @@ const runMachine = (inputLetter, rotorsPosition) => {
         const mediumRotorOutputBack = rotorChanger(mediumRotor, slowRotorOutputBack, false);
         const fastRotorOutputBack = rotorChanger(fastRotor, mediumRotorOutputBack, false);
 
-        const outputChangedWord = plugBoardChanger(alphabet[fastRotorOutputBack]);
+        const outputChangedWord = plugBoardChanger(alphabet[fastRotorOutputBack], plugBoard);
         outputLetter.push(outputChangedWord);
 
         fastRotor.position++;
@@ -125,9 +107,4 @@ const runMachine = (inputLetter, rotorsPosition) => {
     return outputLetter.join('');
 } 
 
-console.log('source letter: ', letter);
-
-const encryptLetter = runMachine(letter, [5, 1, 2]);
-console.log('encrypt letter:', encryptLetter);
-const decryptLetter = runMachine(encryptLetter, [5, 1, 2]);
-console.log('decrypt letter:', decryptLetter);
+export { runMachine };
