@@ -34,6 +34,7 @@ runBtn.addEventListener('click', () => {
         ],
         chains
     )
+    
     outputDisplay.innerHTML = String(outputLetter);
 })
 
@@ -79,11 +80,9 @@ decreaseSlowRotorBtn.addEventListener('click', () => {
     decreaseRotor(slowRotorDisplay);
 });
 
+const chains = [];
 const addChainBtn = document.getElementById('addChainBtn');
 const chainWrapper = document.getElementById('chainWrapper');
-
-const chains = [];
-
 const leftChain = document.getElementById('leftChain');
 const rightChain = document.getElementById('rightChain');
 
